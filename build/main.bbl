@@ -41,12 +41,14 @@ Yuheng Li, Haotian Liu, Qingyang Wu, Fangzhou Mu, Jianwei Yang, Jianfeng Gao,
 \newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
   and Pattern Recognition (CVPR)}, pages 22511--22521, 2023.
 
-\bibitem[Mou et~al.(2023)Mou, Wang, Xie, Zhang, Qi, Shan, and Qie]{mou2023t2i}
-Chong Mou, Xintao Wang, Liangbin Xie, Jian Zhang, Zhongang Qi, Ying Shan, and
-  Xiaohu Qie.
+\bibitem[Mou et~al.(2024)Mou, Wang, Xie, Wu, Zhang, Qi, Shan, and
+  Qie]{mou2023t2i}
+Chong Mou, Xintao Wang, Liangbin Xie, Yanze Wu, Jian Zhang, Zhongang Qi, Ying
+  Shan, and Xiaohu Qie.
 \newblock T2i-adapter: Learning adapters to dig out more controllable ability
   for text-to-image diffusion models.
-\newblock arXiv:2302.08453, 2023.
+\newblock \emph{Proceedings of the AAAI Conference on Artificial Intelligence},
+  38\penalty0 (5):\penalty0 4296--4304, 2024.
 
 \bibitem[Rombach et~al.(2022)Rombach, Blattmann, Lorenz, Esser, and
   Ommer]{rombach2022high}

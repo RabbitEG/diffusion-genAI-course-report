@@ -13,8 +13,8 @@ While the original ControlNet paper establishes the general framework, several p
 In this paper, we present a systematic ablation study addressing these questions. Using the Fill50K dataset as a testbed, we evaluate four configurations spanning the combinatorial space of \texttt{sd\_locked} $\in \{\text{True}, \text{False}\}$ and \texttt{only\_mid\_control} $\in \{\text{True}, \text{False}\}$. Our key contributions are:
 
 \begin{enumerate}
-    \item \textbf{Empirical characterization} of convergence patterns, generation quality, and overfitting tendencies across configurations.
-    \item \textbf{Identification of Configuration D} (\texttt{sd\_locked=False}, \texttt{only\_mid\_control=True}) as optimal for small-data scenarios, achieving high-quality generation at approximately 2400 steps.
+    \item \textbf{Empirical characterization} of convergence patterns, generation quality, and overfitting tendencies across configurations in our study.
+    \item \textbf{Configuration D} achieves the best balance for small-data scenarios, with high-quality generation emerging at approximately 2400 steps when the backbone is unfrozen and conditional injection is restricted to the middle block.
     \item \textbf{Mechanistic analysis} explaining the observed behaviors through the lens of effective capacity, gradient pathway constraints, and loss landscape geometry.
     \item \textbf{Practical guidelines} for training ControlNet variants under data-limited conditions.
 \end{enumerate}

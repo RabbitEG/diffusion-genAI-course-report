@@ -7,6 +7,7 @@ Table~\ref{tab:configs} summarizes the four experimental configurations and thei
 
 \begin{table}[h]
 \centering
+\small
 \caption{Ablation configurations and observed outcomes.}
 \label{tab:configs}
 \begin{tabular}{@{}ccccc@{}}
@@ -23,24 +24,17 @@ D & False & True & 2400 & \textbf{High} \\
 
 \subsection{Detailed Analysis by Configuration}
 
-\textbf{Configuration A} (\texttt{sd\_locked=True}, \texttt{only\_mid\_control=True}): This conservative setting achieves medium quality with stable convergence around 2700 steps. The frozen backbone ensures prior preservation, while middle-only injection provides implicit regularization. However, the inability to adapt backbone features limits conditional alignment quality.
+\textbf{Configuration A}: This conservative setting achieves medium quality with stable convergence around 2700 steps. The frozen backbone ensures prior preservation, while middle-only injection provides implicit regularization. However, the inability to adapt backbone features limits conditional alignment quality.
 
-\textbf{Configuration B} (\texttt{sd\_locked=False}, \texttt{only\_mid\_control=False}): Full unfreezing with multi-level injection dramatically increases effective capacity. While training loss decreases rapidly, validation metrics degrade, indicating severe overfitting. The model memorizes training condition-output pairs rather than learning generalizable mappings.
+\textbf{Configuration B}: Full unfreezing with multi-level injection dramatically increases effective capacity. While training loss decreases rapidly, validation metrics degrade, indicating severe overfitting. The model memorizes training condition-output pairs rather than learning generalizable mappings in practice.
 
-\textbf{Configuration C} (\texttt{sd\_locked=True}, \texttt{only\_mid\_control=False}): Despite keeping the backbone frozen, multi-level injection still leads to overfitting, with convergence as early as 1500 steps followed by quality degradation. This suggests that injection depth, not just backbone training, contributes to overfitting risk.
+\textbf{Configuration C}: Despite keeping the backbone frozen, multi-level injection still leads to overfitting, with convergence as early as 1500 steps followed by quality degradation. This suggests that injection depth, not just backbone training, contributes to overfitting risk.
 
-\textbf{Configuration D} (\texttt{sd\_locked=False}, \texttt{only\_mid\_control=True}): This configuration achieves the best results. The unfrozen backbone allows adaptation to the condition distribution, while middle-only injection constrains the effective update subspace. Emergent convergence occurs around 2400 steps, producing high-quality outputs with strong generalization.
+\textbf{Configuration D}: This configuration achieves the best results. The unfrozen backbone allows adaptation to the condition distribution, while middle-only injection constrains the effective update subspace. Emergent convergence occurs around 2400 steps, producing high-quality outputs with strong generalization.
 
 \subsection{Emergent Convergence Phenomenon}
 
-A notable observation across configurations is the non-linear convergence behavior. Models maintain outputs close to the unconditional baseline for extended periods before exhibiting sudden alignment with input conditions. This ``emergent convergence'' is most pronounced in Configuration D, where:
-
-\begin{itemize}
-    \item Steps 0--1500: Minimal deviation from pretrained behavior
-    \item Steps 1500--2200: Gradual increase in condition sensitivity
-    \item Steps 2200--2400: Rapid alignment with structural conditions
-    \item Steps 2400+: Stable high-quality generation
-\end{itemize}
+A notable observation across configurations is the non-linear convergence behavior. Models maintain outputs close to the unconditional baseline for extended periods before exhibiting sudden alignment with input conditions. This ``emergent convergence'' is most pronounced in Configuration D: \textbf{Steps 0--1500} show minimal deviation from pretrained behavior, \textbf{Steps 1500--2200} show a gradual increase in condition sensitivity, \textbf{Steps 2200--2400} show rapid alignment with structural conditions, and \textbf{Steps 2400+} yield stable high-quality generation.
 
 Configuration B also shows rapid change but transitions into overfitting rather than stable alignment.
 

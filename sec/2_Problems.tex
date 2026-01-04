@@ -2,15 +2,15 @@
 
 We formalize the research questions motivating our experimental investigation. Each problem statement corresponds directly to hypotheses tested in our ablation study.
 
-\subsection{Problem 1: Backbone Freezing Trade-off}
+\paragraph{Problem 1: Backbone Freezing Trade-off.}
 
 The standard ControlNet training protocol freezes all Stable Diffusion parameters (\texttt{sd\_locked=True}), training only the copied encoder blocks and zero-convolution connectors. This preserves the pretrained generative prior but may limit the model's ability to adapt to condition distributions that differ significantly from natural images.
 
-\textbf{Question:} Under what circumstances does unfreezing the backbone (\texttt{sd\_locked=False}) improve conditional alignment without catastrophic forgetting of the generative prior?
+\textbf{Question:} Under what circumstances does unfreezing the backbone (\texttt{sd\_locked=False}) improve conditional alignment without catastrophic forgetting of the generative prior in practice?
 
 \textbf{Addressed in:} Configurations A vs. B (Section~\ref{sec:results}), with mechanistic analysis in Section~\ref{sec:discussion}.
 
-\subsection{Problem 2: Condition Injection Depth}
+\paragraph{Problem 2: Condition Injection Depth.}
 
 ControlNet's default architecture injects conditional features at multiple levels of the U-Net decoder through skip connections. An alternative is to restrict injection to the middle block only (\texttt{only\_mid\_control=True}), hypothetically reducing the risk of low-level feature interference.
 
@@ -18,22 +18,17 @@ ControlNet's default architecture injects conditional features at multiple level
 
 \textbf{Addressed in:} Configurations A vs. C and B vs. D (Section~\ref{sec:results}), with gradient pathway analysis in Section~\ref{sec:discussion}.
 
-\subsection{Problem 3: Emergent Convergence Dynamics}
+\paragraph{Problem 3: Emergent Convergence Dynamics.}
 
-Preliminary observations suggest that ControlNet training exhibits non-monotonic behavior: models may maintain near-baseline outputs for many steps before suddenly achieving strong conditional alignment. Understanding this phenomenon is crucial for setting appropriate training schedules.
+Preliminary observations suggest that ControlNet training exhibits non-monotonic behavior: models may maintain near-baseline outputs for many steps before suddenly achieving strong conditional alignment. Understanding this phenomenon is crucial for setting training schedules.
 
 \textbf{Question:} What causes the ``emergent convergence'' pattern, and how do configuration choices affect its timing and stability?
 
 \textbf{Addressed in:} Step-wise quality analysis (Section~\ref{sec:results}) and optimization dynamics discussion (Section~\ref{sec:discussion}).
 
-\subsection{Problem 4: Optimal Configuration for Small Data}
+\paragraph{Problem 4: Optimal Configuration for Small Data.}
 
-Combining the above considerations, we seek to identify configurations that achieve:
-\begin{itemize}
-    \item Strong conditional controllability (alignment with input structure)
-    \item Preservation of generative prior (realistic textures, coherent semantics)
-    \item Robust generalization (no overfitting to training conditions)
-\end{itemize}
+Combining the above considerations, we seek to identify configurations that achieve strong conditional controllability (alignment with input structure), preservation of the generative prior (realistic textures, coherent semantics), and robust generalization (no overfitting to training conditions).
 
 \textbf{Question:} Which combination of \texttt{sd\_locked} and \texttt{only\_mid\_control} best balances these objectives on datasets of $\sim$50K samples?
 
@@ -64,13 +59,7 @@ Several approaches have been proposed to enhance spatial controllability in diff
 
 \subsection{ControlNet Architecture}
 
-ControlNet \cite{zhang2023adding} introduces a ``trainable copy'' paradigm where the encoder blocks of a pretrained U-Net are duplicated and connected to the frozen decoder through zero-initialized convolutions. This design offers several advantages:
-
-\begin{itemize}
-    \item \textbf{Prior preservation:} Zero initialization ensures the model starts from the pretrained behavior.
-    \item \textbf{Flexible conditioning:} The same architecture handles diverse condition types (edges, poses, depth, segmentation).
-    \item \textbf{Training stability:} Freezing the backbone prevents catastrophic forgetting during fine-tuning.
-\end{itemize}
+ControlNet \cite{zhang2023adding} introduces a ``trainable copy'' paradigm where the encoder blocks of a pretrained U-Net are duplicated and connected to the frozen decoder through zero-initialized convolutions. This design offers several advantages: \textbf{prior preservation}, because zero initialization ensures the model starts from the pretrained behavior; \textbf{flexible conditioning}, because the same architecture handles diverse condition types (edges, poses, depth, segmentation); and \textbf{training stability}, because freezing the backbone prevents catastrophic forgetting during fine-tuning.
 
 The ControlNet formulation can be expressed as:
 \begin{equation}

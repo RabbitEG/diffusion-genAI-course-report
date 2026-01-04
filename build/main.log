@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.7.18)  4 JAN 2026 17:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.7.18)  4 JAN 2026 18:56
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -285,14 +285,23 @@ Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
 \c@ALC@depth=\count310
 \ALC@tlm=\skip59
 \algorithmicindent=\skip60
-)) (d:/Program Files/texlive/2025/texmf-dist/tex/latex/hyperref/hyperref.sty
+) (d:/Program Files/texlive/2025/texmf-dist/tex/latex/nowidow/nowidow.sty
+Package: nowidow 2011/09/20 1.0 Easily prevent widows and orphans
+Package: nowidow 
+
+(d:/Program Files/texlive/2025/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+
+(d:/Program Files/texlive/2025/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+)
+(d:/Program Files/texlive/2025/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+)))) (d:/Program Files/texlive/2025/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2024-11-05 v7.01l Hypertext links for LaTeX
 
 (d:/Program Files/texlive/2025/texmf-dist/tex/generic/iftex/iftex.sty
 Package: iftex 2024/12/12 v1.0g TeX engine tests
-)
-(d:/Program Files/texlive/2025/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
-Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
 )
 (d:/Program Files/texlive/2025/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys
 .sty
@@ -301,9 +310,6 @@ Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
 (d:/Program Files/texlive/2025/texmf-dist/tex/generic/pdfescape/pdfescape.sty
 Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
 
-(d:/Program Files/texlive/2025/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
-Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
-)
 (d:/Program Files/texlive/2025/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
 Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -325,10 +331,7 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 (d:/Program Files/texlive/2025/texmf-dist/tex/generic/gettitlestring/gettitlest
 ring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
-
-(d:/Program Files/texlive/2025/texmf-dist/tex/latex/kvoptions/kvoptions.sty
-Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
-))
+)
 \c@section@level=\count311
 )
 (d:/Program Files/texlive/2025/texmf-dist/tex/generic/stringenc/stringenc.sty
@@ -558,20 +561,15 @@ d:/Program Files/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc}
 
 
 [3]
-
-
-Overfull \hbox (4.54796pt too wide) in paragraph at lines 53--63
+Overfull \hbox (4.54796pt too wide) in paragraph at lines 54--65
  [][] 
  []
+
+
 
 
 
 [4]) (./sec/5_Results.tex
-Overfull \hbox (12.38333pt too wide) in paragraph at lines 12--22
- [][] 
- []
-
-
 
 ) (./sec/6_Discussion.tex
 
@@ -579,32 +577,26 @@ Overfull \hbox (12.38333pt too wide) in paragraph at lines 12--22
 
 ) (./sec/7_Conclusion.tex
 
-[6]) (./sec/4_Members.tex
+[6]) (./sec/4_Members.tex) (./sec/8_Acknowledgments.tex
 
-) (./sec/8_Acknowledgments.tex) (build/main.bbl (build/main.brf)
+) (build/main.bbl (build/main.brf)
 \tf@brf=\write4
 \openout4 = `main.brf'.
 
-
-
-[7])
+)
 
 Package caption Warning: Unused \captionsetup[sub] on input line 59.
 See the caption package documentation for explanation.
 
 
 
-
-
-[8
-
-] (build/main.aux)
+[7] (build/main.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 795FE94B8165C3D23332872712DF871C;7657.
+(rerunfilecheck)             Checksum: C81A2627761985322CAACC23FC582498;4580.
 
 
 Package rerunfilecheck Warning: File `main.brf' has changed.
@@ -615,33 +607,32 @@ Package rerunfilecheck Info: Checksums for `main.brf':
 (rerunfilecheck)             After:  1FB069BB12CF42A1A09AA1234008C81A;678.
  ) 
 Here is how much of TeX's memory you used:
- 15365 strings out of 473190
- 254871 string characters out of 5712651
- 704713 words of memory out of 5000000
- 38283 multiletter control sequences out of 15000+600000
- 588301 words of font info for 98 fonts, out of 8000000 for 9000
+ 15401 strings out of 473190
+ 255495 string characters out of 5712651
+ 703988 words of memory out of 5000000
+ 38313 multiletter control sequences out of 15000+600000
+ 591987 words of font info for 108 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 90i,10n,93p,1408b,619s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,9n,93p,1408b,590s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <d:/Program Files/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex
 10.pfb><d:/Program Files/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmmi10.pfb><d:/Program Files/texlive/2025/texmf-dist/fonts/type1/public/amsfon
 ts/cm/cmmi7.pfb><d:/Program Files/texlive/2025/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmr10.pfb><d:/Program Files/texlive/2025/texmf-dist/fonts/type1/publi
 c/amsfonts/cm/cmr7.pfb><d:/Program Files/texlive/2025/texmf-dist/fonts/type1/pu
-blic/amsfonts/cm/cmr8.pfb><d:/Program Files/texlive/2025/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmsy10.pfb><d:/Program Files/texlive/2025/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmsy7.pfb><d:/Program Files/texlive/2025/texmf-dist/fo
-nts/type1/public/amsfonts/symbols/msbm10.pfb><d:/Program Files/texlive/2025/tex
-mf-dist/fonts/type1/urw/courier/ucrb8a.pfb><d:/Program Files/texlive/2025/texmf
--dist/fonts/type1/urw/courier/ucrr8a.pfb><d:/Program Files/texlive/2025/texmf-d
-ist/fonts/type1/urw/courier/ucrro8a.pfb><d:/Program Files/texlive/2025/texmf-di
-st/fonts/type1/urw/times/utmb8a.pfb><d:/Program Files/texlive/2025/texmf-dist/f
-onts/type1/urw/times/utmr8a.pfb><d:/Program Files/texlive/2025/texmf-dist/fonts
-/type1/urw/times/utmri8a.pfb>
-Output written on build/main.pdf (8 pages, 202845 bytes).
+blic/amsfonts/cm/cmsy10.pfb><d:/Program Files/texlive/2025/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmsy7.pfb><d:/Program Files/texlive/2025/texmf-dist/fonts
+/type1/public/amsfonts/symbols/msbm10.pfb><d:/Program Files/texlive/2025/texmf-
+dist/fonts/type1/urw/courier/ucrb8a.pfb><d:/Program Files/texlive/2025/texmf-di
+st/fonts/type1/urw/courier/ucrr8a.pfb><d:/Program Files/texlive/2025/texmf-dist
+/fonts/type1/urw/courier/ucrro8a.pfb><d:/Program Files/texlive/2025/texmf-dist/
+fonts/type1/urw/times/utmb8a.pfb><d:/Program Files/texlive/2025/texmf-dist/font
+s/type1/urw/times/utmr8a.pfb><d:/Program Files/texlive/2025/texmf-dist/fonts/ty
+pe1/urw/times/utmri8a.pfb>
+Output written on build/main.pdf (7 pages, 193582 bytes).
 PDF statistics:
- 354 PDF objects out of 1000 (max. 8388607)
- 310 compressed objects within 4 object streams
- 88 named destinations out of 1000 (max. 500000)
- 289 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 304 PDF objects out of 1000 (max. 8388607)
+ 264 compressed objects within 3 object streams
+ 84 named destinations out of 1000 (max. 500000)
+ 193 words of extra memory for PDF output out of 10000 (max. 10000000)
 

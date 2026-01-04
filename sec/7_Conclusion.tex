@@ -1,0 +1,46 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+We have presented a systematic investigation of ControlNet training configurations, focusing on the interplay between backbone freezing (\texttt{sd\_locked}) and condition injection depth (\texttt{only\_mid\_control}) under small-scale data conditions.
+
+\subsection{Key Findings}
+
+\begin{enumerate}
+    \item \textbf{Configuration D is optimal}: Setting \texttt{sd\_locked=False} and \texttt{only\_mid\_control=True} achieves the best balance of conditional controllability, prior preservation, and generalization on the Fill50K dataset.
+    
+    \item \textbf{Emergent convergence is configuration-dependent}: The timing and stability of the alignment transition varies significantly, with Configuration D exhibiting stable emergence at $\sim$2400 steps.
+    
+    \item \textbf{Injection depth is as important as backbone freezing}: Configuration C demonstrates that multi-level injection can cause overfitting even with a frozen backbone.
+    
+    \item \textbf{Middle-block injection provides implicit regularization}: Restricting conditions to the semantic bottleneck constrains effective capacity while preserving adaptation flexibility.
+\end{enumerate}
+
+\subsection{Practical Recommendations}
+
+Based on our analysis, we recommend the following strategies for training ControlNet on limited data:
+
+\begin{enumerate}
+    \item \textbf{Progressive unfreezing with smooth scheduling}: Begin with frozen backbone, gradually unfreeze layers, and use cosine annealing to smooth the alignment transition.
+    
+    \item \textbf{Prioritize structural layer injection}: Default to \texttt{only\_mid\_control=True} or implement hierarchical gating with middle-layer emphasis.
+    
+    \item \textbf{Add consistency regularization}: Consider cycle consistency or condition-extractable consistency losses:
+    \begin{equation}
+        \mathcal{L}_{\text{cycle}} = \| \text{Extract}(G(c)) - c \|_2^2
+    \end{equation}
+    
+    \item \textbf{Automated hyperparameter search}: Use Bayesian optimization to explore the configuration space of unfreezing degree, injection levels, and learning rate schedules.
+\end{enumerate}
+
+\subsection{Future Directions}
+
+Our findings open several avenues for future work:
+\begin{itemize}
+    \item Extending the analysis to other condition types (depth, segmentation, normal maps)
+    \item Developing learnable injection gating mechanisms
+    \item Investigating transfer across datasets with distribution shift
+    \item Scaling analysis to larger backbone models (SDXL, SD3)
+\end{itemize}
+
+The core insight—that effective capacity and injection topology jointly shape optimization dynamics and generalization—provides a foundation for designing more robust controllable generation systems.
+

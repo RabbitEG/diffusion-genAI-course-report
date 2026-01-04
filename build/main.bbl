@@ -1,63 +1,79 @@
-\begin{thebibliography}{8}
+\begin{thebibliography}{11}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-\bibitem[Cao et~al.(2017)Cao, Simon, Wei, and Sheikh]{Cao2017OpenPose}
-Zhe Cao, Tomas Simon, Shih-En Wei, and Yaser Sheikh.
-\newblock Realtime multi-person 2d pose estimation using part affinity fields.
-\newblock In \emph{2017 IEEE Conference on Computer Vision and Pattern
-  Recognition (CVPR)}, pages 1302--1310, 2017.
+\bibitem[Dhariwal and Nichol(2021)]{dhariwal2021diffusion}
+Prafulla Dhariwal and Alex Nichol.
+\newblock Diffusion models beat gans on image synthesis.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2021.
 
-\bibitem[Ho et~al.(2020)Ho, Jain, and Abbeel]{Ho2020DDPM}
+\bibitem[Ho and Salimans(2022)]{ho2022classifier}
+Jonathan Ho and Tim Salimans.
+\newblock Classifier-free diffusion guidance.
+\newblock arXiv:2207.12598, 2022.
+
+\bibitem[Ho et~al.(2020)Ho, Jain, and Abbeel]{ho2020denoising}
 Jonathan Ho, Ajay Jain, and Pieter Abbeel.
 \newblock Denoising diffusion probabilistic models.
 \newblock In \emph{Advances in Neural Information Processing Systems}, 2020.
 
-\bibitem[Li et~al.(2023)Li, Liu, Wu, Mu, Yang, Gao, Li, and Lee]{Li2023GLIGEN}
+\bibitem[Houlsby et~al.(2019)Houlsby, Giurgiu, Jastrzebski, Morrone,
+  De~Laroussilhe, Gesmundo, Attariyan, and Gelly]{houlsby2019parameter}
+Neil Houlsby, Andrei Giurgiu, Stanislaw Jastrzebski, Bruna Morrone, Qiao
+  De~Laroussilhe, Andrea Gesmundo, Mohammad Attariyan, and Sylvain Gelly.
+\newblock Parameter-efficient transfer learning for nlp.
+\newblock In \emph{International Conference on Machine Learning}, 2019.
+
+\bibitem[Hu et~al.(2022)Hu, Shen, Wallis, Allen-Zhu, Li, Wang, Wang, and
+  Chen]{hu2021lora}
+Edward~J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean
+  Wang, Lu Wang, and Weizhu Chen.
+\newblock Lora: Low-rank adaptation of large language models.
+\newblock In \emph{International Conference on Learning Representations}, 2022.
+
+\bibitem[Li et~al.(2023)Li, Liu, Wu, Mu, Yang, Gao, Li, and Lee]{li2023gligen}
 Yuheng Li, Haotian Liu, Qingyang Wu, Fangzhou Mu, Jianwei Yang, Jianfeng Gao,
   Chunyuan Li, and Yong~Jae Lee.
 \newblock Gligen: Open-set grounded text-to-image generation.
-\newblock In \emph{2023 IEEE/CVF Conference on Computer Vision and Pattern
-  Recognition (CVPR)}, pages 22511--22521, 2023.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition (CVPR)}, pages 22511--22521, 2023.
 
-\bibitem[Lin et~al.(2014)Lin, Maire, Belongie, Bourdev, Girshick, Hays, Perona,
-  Ramanan, Zitnick, and Doll{\'a}r]{Lin2014COCO}
-Tsung-Yi Lin, Michael Maire, Serge Belongie, Lubomir Bourdev, Ross Girshick,
-  James Hays, Pietro Perona, Deva Ramanan, C.~Lawrence Zitnick, and Piotr
-  Doll{\'a}r.
-\newblock Microsoft coco: Common objects in context.
-\newblock In \emph{Computer Vision -- ECCV 2014}, pages 740--755, 2014.
-
-\bibitem[Mou et~al.(2024)Mou, Wang, Xie, Wu, Zhang, Qi, Shan, and
-  Qie]{Mou2023T2IAdapter}
-Chong Mou, Xintao Wang, Liangbin Xie, Yanze Wu, Jian Zhang, Zhongang Qi, Ying
-  Shan, and Xiaohu Qie.
+\bibitem[Mou et~al.(2023)Mou, Wang, Xie, Zhang, Qi, Shan, and Qie]{mou2023t2i}
+Chong Mou, Xintao Wang, Liangbin Xie, Jian Zhang, Zhongang Qi, Ying Shan, and
+  Xiaohu Qie.
 \newblock T2i-adapter: Learning adapters to dig out more controllable ability
   for text-to-image diffusion models.
-\newblock \emph{Proceedings of the AAAI Conference on Artificial Intelligence},
-  38\penalty0 (5):\penalty0 4296--4304, 2024.
+\newblock arXiv:2302.08453, 2023.
 
 \bibitem[Rombach et~al.(2022)Rombach, Blattmann, Lorenz, Esser, and
-  Ommer]{Rombach2022LDM}
+  Ommer]{rombach2022high}
 Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, and Bj{\"o}rn
   Ommer.
 \newblock High-resolution image synthesis with latent diffusion models.
-\newblock In \emph{2022 IEEE/CVF Conference on Computer Vision and Pattern
-  Recognition (CVPR)}, pages 10674--10685, 2022.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition (CVPR)}, pages 10674--10685, 2022.
 
-\bibitem[Xie and Tu(2015)]{Xie2015HED}
-Saining Xie and Zhuowen Tu.
-\newblock Holistically-nested edge detection.
-\newblock In \emph{2015 IEEE International Conference on Computer Vision
-  (ICCV)}, 2015.
+\bibitem[Song et~al.(2021)Song, Sohl-Dickstein, Kingma, Kumar, Ermon, and
+  Poole]{song2020score}
+Yang Song, Jascha Sohl-Dickstein, Diederik~P. Kingma, Abhishek Kumar, Stefano
+  Ermon, and Ben Poole.
+\newblock Score-based generative modeling through stochastic differential
+  equations.
+\newblock In \emph{International Conference on Learning Representations}, 2021.
 
-\bibitem[Zhang et~al.(2023)Zhang, Rao, and Agrawala]{Zhang2023ControlNet}
+\bibitem[Ye et~al.(2023)Ye, Zhang, Liu, Han, and Yang]{ye2023ip}
+Hu Ye, Junting Zhang, Shujie Liu, Xinghang Han, and Wei Yang.
+\newblock Ip-adapter: Text compatible image prompt adapter for text-to-image
+  diffusion models.
+\newblock arXiv:2308.06721, 2023.
+
+\bibitem[Zhang et~al.(2023)Zhang, Rao, and Agrawala]{zhang2023adding}
 Lvmin Zhang, Anyi Rao, and Maneesh Agrawala.
 \newblock Adding conditional control to text-to-image diffusion models.
-\newblock In \emph{2023 IEEE/CVF International Conference on Computer Vision
-  (ICCV)}, pages 3813--3824, 2023.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on
+  Computer Vision (ICCV)}, pages 3813--3824, 2023.
 
 \end{thebibliography}

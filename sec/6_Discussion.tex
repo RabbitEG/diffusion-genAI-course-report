@@ -1,0 +1,88 @@
+\section{Discussion}
+\label{sec:discussion}
+
+We provide mechanistic explanations for the observed phenomena from three complementary perspectives: optimization dynamics, gradient pathway constraints, and diffusion sampling trajectory modulation.
+
+\subsection{Optimization Dynamics and Loss Geometry}
+
+The emergent convergence pattern can be understood through the lens of non-convex optimization dynamics.
+
+\subsubsection{Gradient Plateau and Critical Point Transition}
+
+When \texttt{sd\_locked=False}, including backbone parameters significantly expands the optimization landscape, increasing the likelihood of traversing flat regions and saddle point neighborhoods. Combined with zero-initialized convolutions that initially contribute near-zero gradients, early training exhibits a ``plateau phase'' where updates accumulate without visible behavioral change.
+
+As training progresses, coupling between the condition branch and backbone strengthens. When gradient accumulation crosses a critical threshold, the model transitions from ``reusing pretrained prior'' to ``condition-alignment-driven'' mode. This can be formalized as escaping from a flat region along Hessian-dominated directions:
+\begin{equation}
+    \Delta \theta = -\eta \nabla_\theta \mathcal{L} - \frac{\eta^2}{2} H^{-1} \nabla_\theta \mathcal{L} + O(\eta^3)
+\end{equation}
+Configuration D's convergence at $\sim$2400 steps suggests it operates near the optimal regime where gradient signal strength balances with stability.
+
+\subsubsection{Effective Capacity and Bias-Variance Trade-off}
+
+Configuration B's rapid training loss reduction coupled with validation degradation exemplifies the high-variance overfitting characteristic of small-data regimes. Full-layer injection plus backbone unfreezing dramatically increases effective capacity, causing the model to deviate from the pretrained manifold and memorize training-specific patterns.
+
+Configuration D's \texttt{only\_mid\_control=True} acts as a structural constraint, implementing implicit regularization that:
+\begin{itemize}
+    \item Allows backbone adaptation to new condition distributions
+    \item Prevents shallow/deep layer perturbations that would corrupt the generative prior
+\end{itemize}
+
+This can be augmented with explicit condition consistency regularization:
+\begin{equation}
+    \mathcal{L}_{\text{total}} = \mathcal{L} + \lambda \mathbb{E}\left[ \| E(g(x)) - c \|_2^2 \right]
+\end{equation}
+where $E(\cdot)$ is a pretrained condition extractor and $g(x)$ the generated output.
+
+\subsection{Gradient Pathway Analysis}
+
+\subsubsection{Low-Rank Subspace Adaptation Effect}
+
+When \texttt{only\_mid\_control=True}, gradients primarily flow through the middle block parameters $W_{\text{mid}}$:
+\begin{equation}
+    \frac{\partial \mathcal{L}}{\partial W_{\text{mid}}} = \frac{\partial \mathcal{L}}{\partial y} \cdot \frac{\partial y}{\partial W_{\text{mid}}}
+\end{equation}
+This effectively restricts updates to a lower-dimensional subspace, analogous to LoRA's low-rank constraint. By limiting which modules receive condition-driven updates, we prevent gradient-induced drift in shallow (detail/edge) and deep (semantic/texture) layers, better preserving the pretrained distribution.
+
+\subsubsection{Structural Bottleneck Effect}
+
+The U-Net middle block encodes high-level abstractions (layout, pose, object shapes), while shallow layers handle local edges/textures and deep layers refine output details. Focusing control injection on the middle layer creates a ``structural bottleneck'':
+\begin{itemize}
+    \item Structural signals (pose, edges) are more transferable under small data
+    \item Texture/local patterns are more easily memorized, leading to overfitting
+\end{itemize}
+This explains Configuration C's fast convergence but poor generalization: multi-level injection allows texture memorization despite backbone freezing.
+
+\subsubsection{Toward Dynamic Injection}
+
+Fixed injection positions may not be optimal across condition types. A learnable gating mechanism could generalize \texttt{only\_mid\_control}:
+\begin{equation}
+    y = F(x; \Theta) + \sum_{i=1}^{L} \alpha_i \Delta_i(c, F_i(x))
+\end{equation}
+where $\alpha_i$ are learned injection weights, enabling condition-adaptive modulation.
+
+\subsection{Sampling Trajectory Modulation}
+
+\subsubsection{Phase-Dependent Condition Influence}
+
+In diffusion sampling, early (high-noise) steps determine global layout while late (low-noise) steps refine textures. Configuration D's architecture aligns with this:
+\begin{itemize}
+    \item Middle-layer injection primarily influences layout decisions.
+    \item Unfrozen backbone retains fine-detail generation capability.
+\end{itemize}
+This prevents the boundary blurring and unrealistic textures observed in overfit configurations.
+
+\subsubsection{Drift Term Dominance Transition}
+
+Modeling diffusion as a conditioned SDE:
+\begin{equation}
+    dx = f(x, c) \, dt + g(t) \, dw
+\end{equation}
+When the condition branch is weak, trajectories follow the pretrained prior. As training strengthens condition coupling past a threshold, the condition-dependent drift term dominates, pulling trajectories toward the condition manifold. Configuration D achieves this transition while the middle-block bottleneck prevents destabilization.
+
+\subsubsection{Memory Effects in Overfitting}
+
+Configuration B's overfitting manifests as ``trajectory memorization'': training condition-output pairs are encoded directly into the denoising path, producing artifacts and blurred boundaries on unseen conditions. This represents contamination of the diffusion prior by training-set statistics.
+
+%==============================================================================
+% 7. CONCLUSION
+%==============================================================================

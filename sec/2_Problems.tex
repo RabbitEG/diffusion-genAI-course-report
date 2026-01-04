@@ -1,35 +1,93 @@
-\section{Objectives}
-\label{sec:objectives}
-This study aims to systematically enhance the image generation effects based on pose maps and edge maps under conditional control using ControlNet. The specific objectives include:
+\section{Problem Formulation}
 
-Expanding Application Scenarios: To explore the applicability of ControlNet in a wider range of tasks, such as character action transfer, medical image synthesis, complex scene layout generation, and video keyframe guidance, thereby validating the value of structured conditions across different fields.
+We formalize the research questions motivating our experimental investigation. Each problem statement corresponds directly to hypotheses tested in our ablation study.
 
-Architectural Innovation and Optimization: To investigate improvements in the architectural design of the ControlNet model, including strategies for inserting conditions at intermediate layers of different diffusion models, optimizing the connection methods between the control branch and the backbone network, and developing efficient mechanisms for fusing conditional features with generated features.
+\subsection{Problem 1: Backbone Freezing Trade-off}
 
-Improving Training Strategies: To develop effective training schemes that enhance the model's control capabilities and stability, such as reasonable freezing/thawing strategies for the main model, methods to improve the expression and alignment of condition signals during training, and regularization techniques to boost training stability.
+The standard ControlNet training protocol freezes all Stable Diffusion parameters (\texttt{sd\_locked=True}), training only the copied encoder blocks and zero-convolution connectors. This preserves the pretrained generative prior but may limit the model's ability to adapt to condition distributions that differ significantly from natural images.
 
-We aim to significantly improve the quality of images generated under target pose or edge conditions, ensuring that the output results more accurately match the given conditions in terms of details and structure, while maintaining the diversity and visual realism of the images.
-\subsection{Research Questions}
-\label{sec:research_questions}
-To achieve the research objectives, this paper will focus on exploring the following key issues:
+\textbf{Question:} Under what circumstances does unfreezing the backbone (\texttt{sd\_locked=False}) improve conditional alignment without catastrophic forgetting of the generative prior?
 
-\begin{enumerate}
-    \item Expansion of ControlNet Applications: Besides generating static character images, under the condition of using pose keypoint maps and edge detection maps, in what other generation tasks can ControlNet be expanded? How does it play a role in motion transfer in dynamic videos, synthesis of medical images, generation from scene layout to images, and continuous guidance for video keyframes, and what challenges does it face?
-    \item Optimization of Architecture Design: Currently, ControlNet introduces control signals by adding a zero-convolution conditional branch to a pre-trained diffusion model. Is there a more optimal network architecture or fusion mechanism that could improve the efficiency of condition utilization? For example, at which levels (shallow vs. deep, encoder vs. decoder) of the diffusion UNet should the conditional features be injected, and what kind of connection and fusion methods (addition, concatenation, or attention mechanisms) would yield the best generation results and precise condition alignment?
-    \item Improvement of Training Strategies: Without compromising the original generative capabilities, how can effective training strategies be designed to enhance ControlNet's sensitivity and control accuracy towards conditions? For instance, in what situations should the weights of the pre-trained diffusion model be frozen, or gradually unfrozen to adapt to new domains? Can the introduction of additional loss functions (such as cycle consistency loss or intermediate feature alignment) improve the match between conditions and outputs, thereby enhancing training stability and generation quality?
-\end{enumerate}
+\textbf{Addressed in:} Configurations A vs. B (Section~\ref{sec:results}), with mechanistic analysis in Section~\ref{sec:discussion}.
 
-\subsection{Related Work}
-\label{sec:related_work}
-\textbf{T2I-Adapter: A Lightweight Control Module.}
-Following ControlNet~\cite{Zhang2023ControlNet}, researchers have explored alternative efficient methods for incorporating structural conditions. T2I-Adapter~\cite{Mou2023T2IAdapter} introduces a lightweight, plug-and-play adapter module that injects external control signals without modifying the original Stable Diffusion architecture. This approach trains small convolutional networks for each condition type (e.g., sketch, edge, depth, keypoints) to encode multi-scale features, which are then added to the feature maps at different layers of Stable Diffusion's U-Net encoder. While the base model remains frozen, only the adapter parameters are updated. With substantially fewer parameters (e.g., 77M compared to ControlNet's 567M), T2I-Adapter enables faster inference while achieving comparable or superior structural and textual alignment on datasets like COCO~\cite{Lin2014COCO}. Additionally, it supports flexible module composition: adapters for different conditions can be weighted and combined during inference to enable multi-condition control without retraining. For instance, merging outputs from sketch and color palette adapters allows simultaneous control over shape and color. The method also employs non-uniform timestep sampling during training to enhance guidance for low-level visual features (e.g., edges, colors). Overall, T2I-Adapter demonstrates an effective pathway for leveraging large models' implicit capabilities through compact modules, offering a valuable complement to the ControlNet framework.
+\subsection{Problem 2: Condition Injection Depth}
 
-\textbf{Other Structured Conditional Generation Methods.}
-Beyond the above, several recent architectures have been proposed to enhance controllability by integrating structural information into diffusion models. For example, GLIGEN~\cite{Li2023GLIGEN} focuses on controlling scene layout and object placement. By incorporating learnable gated units into Stable Diffusion's cross-attention layers, GLIGEN accepts bounding box coordinates and corresponding object labels as additional inputs, enabling precise object positioning. Similar to other methods, it freezes most of the pre-trained weights and trains only a small set of gating and embedding parameters, thereby endowing the model with grounding capabilities. Experiments show that GLIGEN, built upon pre-trained diffusion models, achieves higher image quality and layout accuracy in layout-to-image tasks compared to models trained from scratch. Another related direction is multi-conditional diffusion, where models are trained to accept composite controls (e.g., text, segmentation, edges) in a single forward pass. However, such approaches typically require full retraining or large-scale fine-tuning, incurring high computational costs and potential limitations in generalizing to unseen condition combinations.
+ControlNet's default architecture injects conditional features at multiple levels of the U-Net decoder through skip connections. An alternative is to restrict injection to the middle block only (\texttt{only\_mid\_control=True}), hypothetically reducing the risk of low-level feature interference.
 
-\textbf{Training Strategies and Enhanced Control Performance.}
-As structural conditional generation methods evolve, improving condition adherence and output quality has become a key research focus. Some studies introduce additional constraint losses during training to strengthen condition-image consistency. For example, a pixel-level cycle consistency loss can be used: pre-trained discriminative models (e.g., edge detectors, segmentation networks) are applied to generated images to extract condition signals, which are then compared with the original input conditions to directly optimize alignment. To mitigate the high computational cost of full diffusion sampling during loss calculation, an efficient single-step perturbation strategy can approximate the generated output for consistency evaluation.
+\textbf{Question:} Does restricting condition injection to the semantic bottleneck layer improve generalization on small datasets by acting as an implicit regularizer?
 
-Another line of work explores intermediate feature alignment training. At each denoising step, lightweight convolutional probes are trained to reconstruct input condition maps (e.g., edges or depth) from the U-Net's intermediate features. During training, a consistency loss is computed between the predicted ``pseudo-condition'' from noisy latents and the ground-truth condition, encouraging the model to maintain condition awareness throughout the diffusion process. This strategy embeds control signals more deeply into generation, enhancing structural fidelity and control precision.
+\textbf{Addressed in:} Configurations A vs. C and B vs. D (Section~\ref{sec:results}), with gradient pathway analysis in Section~\ref{sec:discussion}.
 
-In summary, recent advances—spanning model architectures (e.g., ControlNet, T2I-Adapter, GLIGEN) and training strategies (e.g., frozen fine-tuning, adapter composition, consistency constraints)—have continuously advanced the field of structurally conditioned controllable generation. Building upon these works, this study further extends applicable scenarios and proposes improvements for generation tasks under pose and edge map conditions, contributing to enhanced quality and precision in controllable image synthesis.
+\subsection{Problem 3: Emergent Convergence Dynamics}
+
+Preliminary observations suggest that ControlNet training exhibits non-monotonic behavior: models may maintain near-baseline outputs for many steps before suddenly achieving strong conditional alignment. Understanding this phenomenon is crucial for setting appropriate training schedules.
+
+\textbf{Question:} What causes the ``emergent convergence'' pattern, and how do configuration choices affect its timing and stability?
+
+\textbf{Addressed in:} Step-wise quality analysis (Section~\ref{sec:results}) and optimization dynamics discussion (Section~\ref{sec:discussion}).
+
+\subsection{Problem 4: Optimal Configuration for Small Data}
+
+Combining the above considerations, we seek to identify configurations that achieve:
+\begin{itemize}
+    \item Strong conditional controllability (alignment with input structure)
+    \item Preservation of generative prior (realistic textures, coherent semantics)
+    \item Robust generalization (no overfitting to training conditions)
+\end{itemize}
+
+\textbf{Question:} Which combination of \texttt{sd\_locked} and \texttt{only\_mid\_control} best balances these objectives on datasets of $\sim$50K samples?
+
+\textbf{Addressed in:} Comparative evaluation and final recommendations (Sections~\ref{sec:results}--\ref{sec:conclusion}).
+
+%==============================================================================
+% 3. RELATED WORK
+%==============================================================================
+\section{Related Work}
+
+\subsection{Diffusion Models for Image Generation}
+
+Diffusion probabilistic models \cite{ho2020denoising,song2020score} have emerged as a dominant paradigm for generative modeling, achieving state-of-the-art results on image synthesis benchmarks. Latent diffusion models \cite{rombach2022high} improve efficiency by operating in a compressed latent space, enabling high-resolution generation with reduced computational cost. Stable Diffusion, built on this framework, serves as the backbone for numerous conditional generation methods.
+
+\subsection{Conditional Control in Diffusion Models}
+
+Several approaches have been proposed to enhance spatial controllability in diffusion models:
+
+\textbf{Classifier Guidance} \cite{dhariwal2021diffusion} steers the sampling process using gradients from an external classifier, but requires training separate classifiers for each condition type.
+
+\textbf{Classifier-Free Guidance} \cite{ho2022classifier} eliminates the need for external classifiers by jointly training conditional and unconditional models, now standard in text-to-image systems.
+
+\textbf{T2I-Adapter} \cite{mou2023t2i} introduces lightweight adapter modules that inject spatial conditions without modifying the base model, enabling efficient multi-condition composition.
+
+\textbf{GLIGEN} \cite{li2023gligen} extends diffusion models with grounding capabilities, allowing bounding box and keypoint-based control through gated self-attention layers.
+
+\textbf{IP-Adapter} \cite{ye2023ip} enables image prompt conditioning through decoupled cross-attention, complementing text-based control with visual references.
+
+\subsection{ControlNet Architecture}
+
+ControlNet \cite{zhang2023adding} introduces a ``trainable copy'' paradigm where the encoder blocks of a pretrained U-Net are duplicated and connected to the frozen decoder through zero-initialized convolutions. This design offers several advantages:
+
+\begin{itemize}
+    \item \textbf{Prior preservation:} Zero initialization ensures the model starts from the pretrained behavior.
+    \item \textbf{Flexible conditioning:} The same architecture handles diverse condition types (edges, poses, depth, segmentation).
+    \item \textbf{Training stability:} Freezing the backbone prevents catastrophic forgetting during fine-tuning.
+\end{itemize}
+
+The ControlNet formulation can be expressed as:
+\begin{equation}
+    y_c = F(x; \Theta) + \mathcal{Z}(F(x + \mathcal{Z}(c; \Theta_{z1}); \Theta_c); \Theta_{z2})
+\end{equation}
+where $F(\cdot; \Theta)$ denotes the frozen backbone, $\Theta_c$ the trainable copy, and $\mathcal{Z}(\cdot; \Theta_z)$ the zero-initialized convolutions.
+
+\subsection{Parameter-Efficient Fine-Tuning}
+
+Our analysis connects to broader work on efficient adaptation of large models:
+
+\textbf{LoRA} \cite{hu2021lora} constrains weight updates to low-rank subspaces, reducing trainable parameters while maintaining adaptation quality.
+
+\textbf{Adapter Tuning} \cite{houlsby2019parameter} inserts small bottleneck modules between frozen layers, enabling task-specific adaptation with minimal parameter overhead.
+
+The \texttt{only\_mid\_control} configuration can be viewed through this lens: by restricting condition injection to the middle block, we implicitly constrain the effective update subspace, achieving regularization effects similar to architectural bottlenecks.
+
+%==============================================================================
+% 4. METHODOLOGY
+%==============================================================================

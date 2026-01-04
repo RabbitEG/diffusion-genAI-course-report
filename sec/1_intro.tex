@@ -1,13 +1,24 @@
 \section{Introduction}
-\label{sec:intro}
 
-In recent years, diffusion models~\cite{Ho2020DDPM} have achieved significant success in the field of text-to-image generation. Latent diffusion models, represented by Stable Diffusion~\cite{Rombach2022LDM}, can generate high-quality images based on natural language prompts. However, relying solely on text prompts makes it difficult to precisely control the spatial layout and structural details of the image; for example, it is challenging to accurately describe the complex poses of characters or the detailed arrangement of a scene through words alone. This often leads to the need for repeated experimentation and adjustment of the prompt to gradually approach the desired composition.
+Text-to-image diffusion models such as Stable Diffusion \cite{rombach2022high} have demonstrated remarkable capabilities in generating high-quality images from textual descriptions. However, precise spatial control over the generated content—such as specifying exact poses, edges, or depth layouts—remains challenging when relying solely on text prompts. ControlNet \cite{zhang2023adding} addresses this limitation by introducing a trainable copy of the encoder blocks that processes structural conditions (e.g., Canny edges, human poses, depth maps) and modulates the frozen backbone through zero-initialized convolutions.
 
-%-------------------------------------------------------------------------
+While the original ControlNet paper establishes the general framework, several practical questions arise when applying this approach to domain-specific applications with limited training data:
 
+\begin{itemize}
+    \item Should the Stable Diffusion backbone remain frozen during training, or can selective unfreezing improve adaptation to new condition distributions?
+    \item Is it beneficial to inject conditional signals at all decoder levels, or does restricting injection to specific layers yield better generalization?
+    \item How do these choices interact with each other and with dataset scale?
+\end{itemize}
 
-The introduction of ControlNet~\cite{Zhang2023ControlNet} provides a breakthrough for this challenge. ControlNet is an architecture that adds conditional control to pre-trained text-to-image diffusion models. Without altering the original weights of the Stable Diffusion model, it incorporates external structural information (such as edge detection maps, human keypoint pose diagrams, etc.) as additional conditional inputs, thereby providing fine-grained spatial guidance for the generation process. Specifically, ControlNet duplicates and freezes the weights of the original Stable Diffusion model, using "zero-convolution" layers to connect a new conditional branch to the feature layers of the diffusion model. Since these convolutional layers start with zero initial weights, they have minimal impact on the original model at the beginning of training, gradually learning the conditional control signals from scratch. This design ensures that adding the control branch does not disrupt the original generation capabilities while effectively aligning the generated images with the input conditions. Experiments show that ControlNet can be stably trained under various conditions (regardless of the size of the dataset) and supports flexible combinations of single or multiple conditions such as edges, depth, segmentation, and human poses. By allowing users to provide additional structural images as conditions, ControlNet achieves finer control over image generation compared to pure text, enhancing the match between the generated results and user intentions, and expanding the application prospects of diffusion models in creative design, film and animation, content editing, and more.
+In this paper, we present a systematic ablation study addressing these questions. Using the Fill50K dataset as a testbed, we evaluate four configurations spanning the combinatorial space of \texttt{sd\_locked} $\in \{\text{True}, \text{False}\}$ and \texttt{only\_mid\_control} $\in \{\text{True}, \text{False}\}$. Our key contributions are:
 
+\begin{enumerate}
+    \item \textbf{Empirical characterization} of convergence patterns, generation quality, and overfitting tendencies across configurations.
+    \item \textbf{Identification of Configuration D} (\texttt{sd\_locked=False}, \texttt{only\_mid\_control=True}) as optimal for small-data scenarios, achieving high-quality generation at approximately 2400 steps.
+    \item \textbf{Mechanistic analysis} explaining the observed behaviors through the lens of effective capacity, gradient pathway constraints, and loss landscape geometry.
+    \item \textbf{Practical guidelines} for training ControlNet variants under data-limited conditions.
+\end{enumerate}
 
-
-Based on this background, we observe that current research and applications of ControlNet mainly focus on controlling the poses of static images of people, with insufficient exploration of its broader potential uses and areas for improvement. For instance, in tasks such as video synthesis, medical imaging, biological feature simulation, and complex scene layout, there is great potential for structural condition control. Similarly, there are possibilities for further optimization in the ControlNet model architecture and training strategies to improve the quality of generation and the fidelity to the conditions. Therefore, this paper takes image generation under the conditions of pose maps (such as human keypoints) and edge maps (such as HED edge detection maps~\cite{Xie2015HED}) as a starting point, delving into how to enhance the generation quality and conditional control capabilities of ControlNet. This research is of great significance: it can enrich the application of ControlNet in more fields, making the generation of diffusion models more "what you see is what you get," and also provide new ideas for the design of the next generation of controllable image generation models.
+%==============================================================================
+% 2. PROBLEM FORMULATION
+%==============================================================================

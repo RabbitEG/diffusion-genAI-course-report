@@ -3,8 +3,8 @@
 \documentclass[10pt,twocolumn,letterpaper]{article}
 
 %%%%%%%%% PAPER TYPE  - PLEASE UPDATE FOR FINAL VERSION
-% \usepackage{cvpr}              % To produce the CAMERA-READY version
-\usepackage[review]{cvpr}      % To produce the REVIEW version
+ \usepackage{cvpr}              % To produce the CAMERA-READY version
+% \usepackage[review]{cvpr}      % To produce the REVIEW version
 % \usepackage[pagenumbers]{cvpr} % To force page numbers, e.g. for an arXiv version
 
 % Import additional packages in the preamble file, before hyperref
@@ -22,15 +22,19 @@
 
 %%%%%%%%% PAPER ID
 % (intentionally left blank)
-\def\paperID{}
+\def\paperID{28}
 \def\confName{CVPR}
 \def\confYear{2026}
 
 %%%%%%%%% TITLE
-\title{An In-Depth Exploration of ControlNet Training Strategy Ablations for Conditional Generation}
+\title{\textbf{Training Strategy Analysis for ControlNet: \\Balancing Conditional Controllability and Generalization on Small-Scale Datasets}}
 
 %%%%%%%%% AUTHORS
-\author{Hao Zheng \and Zhiyi Chen \and Rongpei Li}
+\author{
+Hao Zheng$^{1}$, Zhiyi Chen$^{1}$, Rongpei Li$^{1}$ \\
+ \\
+}
+\date{}
 
 \begin{document}
 \maketitle
@@ -38,7 +42,11 @@
 \input{sec/1_intro}
 \input{sec/2_Problems}
 \input{sec/3_Methods}
+\input{sec/5_Results}
+\input{sec/6_Discussion}
+\input{sec/7_Conclusion}
 \input{sec/4_Members}
+\input{sec/8_Acknowledgments}
 {
     \small
     \bibliographystyle{ieeenat_fullname}
